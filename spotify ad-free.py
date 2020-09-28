@@ -3,7 +3,10 @@
 
 # In[ ]:
 
-
+print("Installing required libraries")
+pip install bs4
+pip install selenium
+pip install pycaw
 #install all the libraries required through pip or whatever
 from time import sleep
 from bs4 import BeautifulSoup
