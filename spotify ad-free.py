@@ -4,9 +4,9 @@
 # In[ ]:
 
 print("Installing required libraries")
-pip install bs4
-pip install selenium
-pip install pycaw
+import pip
+package_names=['selenium', 'bs4', 'pycaw'] #packages to install
+pip.main(['install'] + package_names + ['--upgrade'])
 #install all the libraries required through pip or whatever
 from time import sleep
 from bs4 import BeautifulSoup
