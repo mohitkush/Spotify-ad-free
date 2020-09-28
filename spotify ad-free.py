@@ -3,11 +3,11 @@
 
 # In[ ]:
 
-print("Installing required libraries")
+print("Installing all the required libraries")
 import pip
-package_names=['selenium', 'bs4', 'pycaw'] #packages to install
+package_names=['selenium', 'bs4', 'pycaw']
 pip.main(['install'] + package_names + ['--upgrade'])
-#install all the libraries required through pip or whatever
+import pickle
 from time import sleep
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -15,30 +15,25 @@ from selenium.webdriver.common.keys import Keys
 from random import randint
 from pycaw.pycaw import AudioUtilities, ISimpleAudioVolume
 from webdriver_manager.chrome import ChromeDriverManager
-driver = webdriver.Chrome(ChromeDriverManager().install())   
+driver = webdriver.Chrome(ChromeDriverManager().install()) 
 link = "https://open.spotify.com/"
 url = driver.get(link)
 sleep(randint(3,8))
-loged_in = input("log in with your credintials and press enter: ")
-###below code is automated for log in with facebook
-#driver.find_element_by_xpath("/html/body/div[3]/div/div[2]/div[1]/header/div[4]/button[2]").click()
-#sleep(randint(3,6))
-#driver.find_element_by_xpath("/html/body/div[1]/div[2]/div/div[2]/div/a").click()
-#sleep(randint(3,6))
-#log_id = ""
-#pass_id = ""
-#driver.find_element_by_xpath("/html/body/div[1]/div[3]/div[1]/div/div/div[2]/div[1]/form/div/div[1]/input").send_keys(log_id)
-#driver.find_element_by_xpath("/html/body/div[1]/div[3]/div[1]/div/div/div[2]/div[1]/form/div/div[2]/input").send_keys(pass_id + Keys.ENTER)
+try:
+    cookies = pickle.load(open("cookies.pkl", "rb"))
+    for cookie in cookies:
+        driver.add_cookie(cookie)
+except FileNotFoundError:
+    loged_in = input("log in with your credintials and press enter: ")
+    pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
 
 print('Play a damn song')
-sleep(randint(15,20))
-
+sleep(randint(10,15))
 while True:
     soup = BeautifulSoup(driver.page_source, 'lxml')
     ad = soup.find("div",{"class":"_3773b711ac57b50550c9f80366888eab-scss ellipsis-one-line"})
     y = ad.text
     if y=='Advertisement':
-        print("gotcha")
         sessions = AudioUtilities.GetAllSessions()
         for session in sessions:
             volume = session._ctl.QueryInterface(ISimpleAudioVolume)
@@ -50,15 +45,6 @@ while True:
             volume = session._ctl.QueryInterface(ISimpleAudioVolume)
             if session.Process and session.Process.name() == "chrome.exe":
                 volume.SetMasterVolume(1, None)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
 
 
 
