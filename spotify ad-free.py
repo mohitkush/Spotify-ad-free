@@ -11,9 +11,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from random import randint
 from pycaw.pycaw import AudioUtilities, ISimpleAudioVolume
-print("give chromedrivers location ,for example C:\\Users\\Hp\\Downloads\\chromedriver\\chromedriver.exe, in case you don't have the drivers refer chromedriver.chromium.org")
-take_driver = input("type here: ")
-driver = webdriver.Chrome(take_driver)   
+from webdriver_manager.chrome import ChromeDriverManager
+driver = webdriver.Chrome(ChromeDriverManager().install())   
 link = "https://open.spotify.com/"
 url = driver.get(link)
 sleep(randint(3,8))
