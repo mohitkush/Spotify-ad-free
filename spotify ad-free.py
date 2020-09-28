@@ -44,7 +44,6 @@ while True:
             volume = session._ctl.QueryInterface(ISimpleAudioVolume)
             if session.Process and session.Process.name() == "chrome.exe":
                 volume.SetMasterVolume(0, None)
-                sleep(5)
     else:
         sessions = AudioUtilities.GetAllSessions()
         for session in sessions:
