@@ -20,13 +20,20 @@ def main():
         loged_in = input("log in with your credintials and press enter: ")
         pickle.dump( driver.get_cookies() , open("cookies"+str(os.environ['COMPUTERNAME'])+".pkl","wb"))
 
-    print('Play a damn song')
+    print('Play a song')
     sleep(randint(10,15))
     while True:
-        soup = BeautifulSoup(driver.page_source, 'lxml')
-        ad = soup.find("div",{"class":"_3773b711ac57b50550c9f80366888eab-scss ellipsis-one-line"})
-        y = ad.text
-        if y=='Advertisement':
+        try:
+            soup = BeautifulSoup(driver.page_source, 'lxml')
+            ad = soup.find("div",{"class":"_3773b711ac57b50550c9f80366888eab-scss ellipsis-one-line"})
+            y = ad.text
+        except AttributeError:
+            print('Refresh the page and play a song')
+            sleep(randint(10,15))
+            soup = BeautifulSoup(driver.page_source, 'lxml')
+            ad = soup.find("div",{"class":"_3773b711ac57b50550c9f80366888eab-scss ellipsis-one-line"})
+            y = ad.text
+        if y=='Advertisement' or y=='Spotify':
             sessions = AudioUtilities.GetAllSessions()
             for session in sessions:
                 volume = session._ctl.QueryInterface(ISimpleAudioVolume)
